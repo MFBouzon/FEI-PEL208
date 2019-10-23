@@ -1,5 +1,8 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstdio>
+#include <cmath>
 using namespace std;
 
 #ifndef MATRIX_H
@@ -13,8 +16,9 @@ class Matrix{
         double **M; //Matriz onde são guardados os elementos
     public:
         Matrix(); //construtor padrão
-        ~Matrix(); //destrutor padrãox
-        Matrix(int N,int M, double ** data = nullptr); //construtor que recebe a quantidade de linhas, colunas e os dados da matriz
+        ~Matrix(); //destrutor padrão
+        Matrix(int N,int M, double **data = nullptr); //construtor que recebe a quantidade de linhas, colunas
+        Matrix(string F); //construtor que le a matriz a partir de um arquivo
         Matrix operator +(const Matrix M2); //sobrecarga do operador +
         Matrix operator *(const Matrix M2); //sobrecarga do operador *
         Matrix operator *(double k); //sobrecarga do operador +
@@ -24,7 +28,7 @@ class Matrix{
         friend istream& operator >> (istream& input, Matrix &A); //sobrecarga do operador >>
         double determinante(); //método para calcular o determinante da matriz
         Matrix CofMatrix(int N,int M,int x, int y = 0); //método para calcular a matriz de cofator x,y
-        Matrix tranpose(); //método para calcular a transposta da matriz
+        Matrix transpose(); //método para calcular a transposta da matriz
         Matrix inverse(); // método para calcular a inversa da matriz
         void fillMatrix(double x); //método para preencher a matriz com um valor x
         int getRows(); //método que retorna o número de linhas

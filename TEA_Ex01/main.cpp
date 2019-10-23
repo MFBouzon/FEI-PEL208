@@ -10,14 +10,20 @@ Projeto: Regressão Linear pelo Método dos Mínimos Quadrados
 */
 
 
-#include "Matrix.h"
+#include "LinearRegression.h"
 
 using namespace std;
 
 int main()
 {
-    Matrix M(2, 2);
-    cin>>M;
-    cout<<M.inverse()<<"\n";
+    Matrix M("Books_attend_grade.csv");
+    cout<<M<<"\n";
+    LinearRegression L(M);
+    L.QuadraticLeastSquares();
+    cout<<L.getCoef()<<"\n";
+    double X[M.getCols()-1];
+    for(int i=0;i<M.getCols()-1;i++)
+        cin>>X[i];
+    cout<<L.predict(X);
     return 0;
 }

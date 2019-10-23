@@ -1,11 +1,20 @@
 # depslib dependency file v1.0
-1571339155 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\main.cpp
+1571856306 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\main.cpp
+	"LinearRegression.h"
+
+1571784176 c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\include\matrix.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<cstdio>
+	<cmath>
+
+1571776029 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\src\matrix.cpp
 	"Matrix.h"
 
-1571339479 c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\include\matrix.h
-	<iostream>
-	<cstdio>
+1571857791 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\src\linearregression.cpp
+	"LinearRegression.h"
 
-1571339657 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\src\matrix.cpp
+1571855063 c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\include\linearregression.h
 	"Matrix.h"
 

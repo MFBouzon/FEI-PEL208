@@ -20,6 +20,49 @@ Matrix::Matrix(int N,int M, double ** data){
     }
 }
 
+Matrix::Matrix(string F){
+    ifstream file;
+    file.open(F);
+    string temp, line;
+    int N = 0, M = 0;
+    while(file >> temp){
+        N++;
+    }
+    for(int i=0;i<temp.size();i++){
+        if(temp[i] == ';')
+            M++;
+    }
+    file.close();
+
+    file.open(F);
+    R=N;
+    C=M+1;
+    this->M = new double*[R];
+    for(int i=0;i<R;i++)
+        this->M[i] = new double[C];
+    int a = 0, b = 0;
+
+    while(file >> temp){
+        string data;
+        for(int i=0;i<temp.size();i++){
+            if(temp[i] == ';'){
+                stringstream ss(data);
+                ss >> this->M[a][b];
+                data = "";
+                b++;
+            }
+            else
+                data += temp[i];
+        }
+        stringstream ss(data);
+        ss >> this->M[a][b];
+        a++;
+        b = 0;
+    }
+
+    file.close();
+}
+
 //sobrecarga do operador + para realizar a soma de duas matrizes
 Matrix Matrix::operator +(const Matrix M2){
     if(M2.R != R && M2.C != C)
@@ -40,7 +83,7 @@ Matrix Matrix::operator *(const Matrix M2){
     Matrix O(R,M2.C);
     for(int i=0;i<R;i++){
         for(int k=0;k<M2.C;k++){
-            int p=0;
+            double p=0;
             for(int j=0;j<C;j++){
                 p+=M[i][j]*M2.M[j][k];
             }
@@ -84,9 +127,8 @@ ostream& operator << (ostream& out, Matrix A){
         for(int j=0;j<C;j++){
             out<<A[make_pair(i,j)]<<" ";
         }
-        out<<endl;
+        out<<"\n";
     }
-    out<<endl;
     return out;
 }
 
@@ -150,10 +192,10 @@ Matrix Matrix::CofMatrix(int N,int M,int x, int y){
 }
 
 //Método para calcular a tranposta da matriz
-Matrix Matrix::tranpose(){
-    Matrix O(R,C);
-    for(int i=0;i<R;i++){
-        for(int j=0;j<C;j++){
+Matrix Matrix::transpose(){
+    Matrix O(C,R);
+    for(int i=0;i<C;i++){
+        for(int j=0;j<R;j++){
             O.M[i][j]=M[j][i];
 
         }
@@ -181,7 +223,7 @@ Matrix Matrix::inverse(){
         M[i] = new double[C];
         for(int j=0;j<C;j++){
             Menor = CofMatrix(R,C,i, j);
-            if(i+j%2==1)
+            if((i+j)%2==1)
                 cof = -1*Menor.determinante();
             else
                 cof = Menor.determinante();
@@ -216,7 +258,5 @@ int Matrix::getCols(){
 //destrutor
 Matrix::~Matrix()
 {
-    //for(int i=0;i<R;i++)
-     //   delete M[i];
-    //delete M;
+
 }

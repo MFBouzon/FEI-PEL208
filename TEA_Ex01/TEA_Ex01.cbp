@@ -34,8 +34,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/LinearRegression.h" />
 		<Unit filename="include/Matrix.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/LinearRegression.cpp" />
 		<Unit filename="src/Matrix.cpp" />
 		<Extensions>
 			<code_completion />
