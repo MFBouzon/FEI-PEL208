@@ -20,8 +20,10 @@ Matrix::Matrix(int N,int M, double ** data){
     }
 }
 
+//construtor que recebe uma string F para ler uma matriz a partir de um arquivo de texto
 Matrix::Matrix(string F){
     ifstream file;
+    //Primeiro é descoberto o número de linhas e colunas do arquivo
     file.open(F);
     string temp, line;
     int N = 0, M = 0;
@@ -150,8 +152,8 @@ double Matrix::operator [] (pair<int,int> P){
 //método para calcular o determinante de uma matriz quadrada utilizando o teorema de Laplace
 double Matrix::determinante(){
     double D=0;
-    if(R!=C){
-        cout<<"ERRO!\n";
+    if(R!=C){ //se a matriz não for quadrada, não é possível calcular o determinante
+        cout<<"Matriz nao eh quadrada!\n";
         return 0;
     }
     if(R==1 && C == 1){
@@ -159,7 +161,7 @@ double Matrix::determinante(){
     }
     double cof;
     Matrix Menor(R,C);
-    for(int i=0;i<C;i++){
+    for(int i=0;i<C;i++){ //calcula o determinante de forma recursiva
         Menor = CofMatrix(R,C,i);
 
         if(i%2==1)
@@ -206,19 +208,23 @@ Matrix Matrix::transpose(){
 //Método para calcular a inversa da matriz pelo método de inversão por matriz adjunta
 Matrix Matrix::inverse(){
 
-    if(R!=C){
-        cout<<"ERRO!\n";
+    if(R!=C){//se a matriz não for quadrada, ela não é inversivel
+        cout<<"Matriz nao eh quadrada!\n";
         return Matrix();
     }
     double det = determinante();
-    if(det == 0){
+    if(det == 0){ // se o determinante da matriz for 0, ela não é inversível
         cout<<"Matriz nao inversivel\n";
         return Matrix();
     }
+
     double cof;
     Matrix Menor(R,C);
+
     double **M;
     M = new double*[R];
+
+    //calcula a matriz de cofatores
     for(int i=0;i<R;i++){
         M[i] = new double[C];
         for(int j=0;j<C;j++){
@@ -230,8 +236,10 @@ Matrix Matrix::inverse(){
             M[i][j] = cof;
         }
     }
+
     Matrix Inv(R, C, M);
     Inv = Inv * (1.0/det);
+
     delete M;
     return Inv;
 }

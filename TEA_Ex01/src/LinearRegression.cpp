@@ -7,7 +7,7 @@ LinearRegression::LinearRegression(Matrix M)
     B = Matrix(0,0);
 }
 
-
+//regressão linear pelo método dos mínimos quadrados linear
 void LinearRegression::LinearLeastSquares()
 {
 
@@ -43,11 +43,13 @@ void LinearRegression::LinearLeastSquares()
     B = (X.transpose()*X).inverse()* X.transpose() * Y;
 }
 
+//regressão linear pelo método dos mínimos quadrados de forma quadrática
 void LinearRegression::QuadraticLeastSquares()
 {
 
     int R = data.getRows();
     int C = 1 + (data.getCols()-1)*2;
+
     double **out = new double *[R];
     double **A;
 
@@ -82,7 +84,7 @@ void LinearRegression::QuadraticLeastSquares()
 
 }
 
-
+//regressão linear pelo método dos mínimos quadrados ponderado
 void LinearRegression::RobustLeastSquares()
 {
     if(B.getCols() == 0)
@@ -94,20 +96,22 @@ void LinearRegression::RobustLeastSquares()
     double **out = new double *[R];
     double **A;
     double W[R];
+    double in[C-1];
 
     A = new double*[R];
-
     for(int i=0;i<R;i++){
         A[i] = new double[C];
+        int a = 0;
         for(int j=0;j<C;j++){
             if(j == 0)
                 A[i][j] = 1;
 
             else{
                 A[i][j] = data[make_pair(i,j-1)];
-                W[i] = predict(&A[i][j]);
+                in[a++] =A[i][j];
             }
         }
+        W[i] = predict(in);
     }
 
     for(int i=0;i<R;i++){
@@ -130,6 +134,7 @@ void LinearRegression::RobustLeastSquares()
     Y = Matrix(R, 1, out);
 
 
+
     delete A;
     delete out;
 
@@ -137,7 +142,7 @@ void LinearRegression::RobustLeastSquares()
 
 }
 
-
+//prediz um valor de saída dado um valor de entrada
 double LinearRegression::predict(double *input){
     double **M = new double*[B.getRows()];
     M[0] = new double(1);
@@ -156,11 +161,12 @@ double LinearRegression::predict(double *input){
     return P[make_pair(0,0)];
 }
 
+//retorna os coeficientes encontrados
 Matrix LinearRegression::getCoef(){
     return B;
 }
 
+//destrutor
 LinearRegression::~LinearRegression()
 {
-    //dtor
 }
