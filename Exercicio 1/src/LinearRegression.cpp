@@ -133,10 +133,14 @@ void LinearRegression::RobustLeastSquares()
     X = Matrix(R, C, A);
     Y = Matrix(R, 1, out);
 
+    cout<<"\n"<<X<<"\n";
 
 
     delete A;
     delete out;
+
+    cout<<"\n"<<(X.transpose()*X)<<"\n";
+    cout<<"\n"<<(X.transpose()*X).inverse()<<"\n";
 
     B = (X.transpose()*X).inverse()* X.transpose() * Y;
 

@@ -17,7 +17,7 @@ using namespace std;
 int main()
 {
     //leitura da base
-    Matrix M("Books_attend_grade.csv");
+    Matrix M("shoes.csv");
     cout<<M<<"\n";
 
     //MMC linear

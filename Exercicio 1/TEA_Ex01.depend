@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1572553899 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\main.cpp
+1572565877 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\main.cpp
 	"LinearRegression.h"
 
 1572475486 c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\include\matrix.h
@@ -12,7 +12,7 @@
 1572037645 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\src\matrix.cpp
 	"Matrix.h"
 
-1572553995 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\src\linearregression.cpp
+1572565954 source:c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\src\linearregression.cpp
 	"LinearRegression.h"
 
 1571858741 c:\users\murillo\mestrado\disciplinas\topicos especiais em aprendizagem\fei-pel208\tea_ex01\include\linearregression.h
