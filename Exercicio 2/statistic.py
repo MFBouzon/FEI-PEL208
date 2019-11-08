@@ -11,9 +11,11 @@ Created on Thu Oct 31 21:07:31 2019
 from math import sqrt
 import numpy as np
 
+#função para calcular a média de um conjunto de valores em uma lista
 def mean(data):
     return sum(data)/len(data)
 
+#função para calcular a covariância entre duas variáveis
 def covariance(x, y):
     
     a = [i - mean(x) for i in x]
@@ -23,53 +25,45 @@ def covariance(x, y):
     
     return sum(c)/(len(x)-1)
  
+#função que retorna a matriz de covariância entre os dados da matriz    
 def getCovMatrix(data):
     cov = [[covariance(data[x],data[y]) for x in range(len(data))] for y in range(len(data))]
     return cov
 
-def bhaskara(a, b, c):
-    
-    delta = b**2 - (4*a*c)
-    if delta < 0:
-        return []
-    elif delta == 0:
-        return [(-b)/(2*a)]
-    else:
-         return [((-b)+sqrt(delta))/(2*a), ((-b)-sqrt(delta))/(2*a)]
-
-def gauss (a, b):
-  n = len(a)
-  for k in range(0, n-1, 1):
-    for i in range(k+1, n, 1):
-      l = a[i][k] / a[k][k]
-      for j in range(k, n, 1):
-        a[i][j] = a[i][j] - l * a[k][j]
-      b[i] = b[i] - l * b[k]
-  return(b, a)
-    
+#funão para resolver um sistema linear de duas equações        
 def solveLin(mat, v):
-    n = len(mat)
-    vec = np.empty(n)
-    vec.fill(1)
-    for i in range(len(mat)):
-        mat[i][i] = mat[i][i] - v
-    if np.linalg.det(mat) != 0:  
-        ret = np.dot(vec, np.linalg.inv(mat))
-    return ret
+    y = v - mat[0][0]
+    x = mat[0][1]
+    S = -sqrt((x**2) + (y**2))
+    return y/S, x/S
 
+#função que retorna os auto valores de uma matriz
 def getEigenValues(data):
     
-    a = 1
-    b = -(data[0][0]+data[1][1])
-    c = (data[0][0]*data[1][1]) - (data[1][0]*data[0][1])
-    
-    print(a, b, c)
-    
-    return bhaskara(a, b, c)
+    T = data[0][0] + data[1][1]
+    D = (data[0][0]*data[1][1]) - (data[0][1]*data[1][0])    
 
+    L1 = T/2 + sqrt(T**2/4 - D)
+    L2 = T/2 - sqrt(T**2/4 - D)
+    
+    return L1, L2
+
+#função que retorna os auto vetores a partir de uma matriz e seus auto valores
 def getEigenVector(cov, eValues):
     eVec = []
     for i in eValues:
         res = solveLin(cov, i)
-        eVec.append(res.tolist())
+        eVec.append(res)
     return eVec
+
+#função que calcula a análise de componentes principais de um conjunto de dados
+def PCA(data):
+    covMatrix = getCovMatrix(data)
+    if len(covMatrix) > 2:
+        return np.linalg.eig(covMatrix)
+    else:
+        eigenValues = getEigenValues(covMatrix)
+        eigenVector = getEigenVector(covMatrix, eigenValues)
+    
+        return eigenValues, eigenVector
+    

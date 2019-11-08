@@ -11,16 +11,52 @@ Created on Thu Oct 31 21:07:31 2019
 
 import statistic
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-data = pd.read_csv("data.csv", sep=';', header = None)
-data = data.values.T.tolist()
-print(data)
-covMatrix = statistic.getCovMatrix(data)
-print(covMatrix)
-eigenValues = statistic.getEigenValues(covMatrix)
-eigenVector = statistic.getEigenVector(covMatrix, eigenValues)
+from sklearn.linear_model import LinearRegression
 
-print(eigenValues, "\n", eigenVector)
+#bases
+files = ["alpswater.csv", "US Census.csv", "data.csv"]
 
-data2 = [[2, 1], [1,2]]
-print(statistic.getEigenVector(data2, statistic.getEigenValues(data2)))
+#calcular o PCA para cada base
+for fname in files:
+    data = pd.read_csv(fname, sep=';', header = None)
+    data = data.values.T.tolist()
+    eigenValues, eigenVector = statistic.PCA(data)
+    
+    print('Eigen Values = ', eigenValues,"\nEigen Vector = ", eigenVector)
+    
+    
+    inf = min(data[0])
+    sup = max(data[0])
+    
+    
+    inp = np.asarray([data[0]]).T
+    out = np.array([data[1]]).T
+    reg = LinearRegression().fit(inp,out)
+    
+    x = np.linspace(inf, sup, len(data[0]))
+    y = eigenVector[0][0]*x + eigenVector[0][1] 
+    z = eigenVector[1][0]*x + eigenVector[1][1]
+    
+    yl = reg.predict(np.asmatrix(x).T)
+    
+    
+    plt.plot(data[0], data[1],'o', color='blue')
+    plt.plot(x, y, '-r', label= 'PC 1')
+    plt.plot(x, z, '-g', label= 'PC 2')
+    
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('PCA')
+    plt.plot(np.asmatrix(x).T, yl, color = 'black', label = 'Regressão Linear')
+    plt.legend(loc='upper left')
+    plt.show()
+    
+    data2 = [(data[0][i]*eigenVector[0][0]) + (data[1][i]*eigenVector[0][1]) for i in range(len(data[0]))]
+    data3 = [(data[0][i]*eigenVector[1][0]) + (data[1][i]*eigenVector[1][1]) for i in range(len(data[0]))]
+    plt.plot(data2, data3, 'o', color='red')
+    
+    plt.show()
+    
