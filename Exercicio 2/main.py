@@ -14,6 +14,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 
 #bases
@@ -54,9 +56,26 @@ for fname in files:
     plt.legend(loc='upper left')
     plt.show()
     
-    data2 = [(data[0][i]*eigenVector[0][0]) + (data[1][i]*eigenVector[0][1]) for i in range(len(data[0]))]
-    data3 = [(data[0][i]*eigenVector[1][0]) + (data[1][i]*eigenVector[1][1]) for i in range(len(data[0]))]
+    data2 = [(data[0][i]*eigenVector[0][0]) + (data[1][i]*eigenVector[1][0]) for i in range(len(data[0]))]
+    data3 = [(data[0][i]*eigenVector[0][1]) + (data[1][i]*eigenVector[1][1]) for i in range(len(data[0]))]
     plt.plot(data2, data3, 'o', color='red')
     
     plt.show()
+    
+    pca = PCA(n_components = 2)
+    pca.fit(np.transpose(data))
+    components = pca.components_
+    
+    
+    data2 = [(data[0][i]*components[0][0]) + (data[1][i]*components[1][0]) for i in range(len(data[0]))]
+    data3 = [(data[0][i]*components[0][1]) + (data[1][i]*components[1][1]) for i in range(len(data[0]))]
+    plt.plot(data2, data3, 'o', color='red')
+    plt.show()
+    
+    plt.plot(components)
+    plt.plot(eigenVector)
+    plt.show()   
+    print(eigenVector)
+    print(components)
+    print(pca.explained_variance_)
     

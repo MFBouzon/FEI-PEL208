@@ -29,13 +29,13 @@ def covariance(x, y):
 def getCovMatrix(data):
     cov = [[covariance(data[x],data[y]) for x in range(len(data))] for y in range(len(data))]
     return cov
-
+ 
 #funão para resolver um sistema linear de duas equações        
 def solveLin(mat, v):
     y = v - mat[0][0]
     x = mat[0][1]
-    S = -sqrt((x**2) + (y**2))
-    return y/S, x/S
+    S = sqrt((x**2) + (y**2))
+    return x/S, y/S
 
 #função que retorna os auto valores de uma matriz
 def getEigenValues(data):
@@ -56,14 +56,32 @@ def getEigenVector(cov, eValues):
         eVec.append(res)
     return eVec
 
-#função que calcula a análise de componentes principais de um conjunto de dados
+#função que calcula a análise de componentes principais de um conjunto de dados utilizando
+# o numpy para o cálculo dos auto valores e auto vetores
 def PCA(data):
     covMatrix = getCovMatrix(data)
-    if len(covMatrix) > 2:
-        return np.linalg.eig(covMatrix)
-    else:
-        eigenValues = getEigenValues(covMatrix)
-        eigenVector = getEigenVector(covMatrix, eigenValues)
+    eigenValues, eigenVector = np.linalg.eig(covMatrix)
+    zipped = zip(eigenValues, eigenVector.T)
+    zipped = sorted(zipped)
     
-        return eigenValues, eigenVector
+    eigVec = []
+    eigVal = []
+    
+    for i in zipped:
+        eigVal.append(i[0])
+        eigVec.append(i[1])
+   
+    eigVal = eigVal[::-1]
+    eigVec = eigVec[::-1]
+    eigVec = np.asarray(eigVec)
+    
+    return eigVal, eigVec
+
+#função que calcula as componentes principais utilizando a implementação própria
+# do cálculo dos auto valores e auto vetores para 2 variáveis
+def PCA2(data):
+    covMatrix = getCovMatrix(data)
+    eigenValues = getEigenValues(covMatrix)
+    eigenVector = getEigenVector(covMatrix, eigenValues)
+    return eigenValues, eigenVector
     
