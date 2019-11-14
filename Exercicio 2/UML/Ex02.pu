@@ -1,0 +1,16 @@
+@startuml teste
+
+skinparam classAttributeIconSize 0
+skinparam Monochrome true
+
+scale 1
+start
+:Leitura da base;
+:Subtrair a média dos dados;
+:Cálcular Matriz de Covariância;
+:Calcular Autovalores;
+:Cálcular Autovetores;
+:Selecionar as Componentes Principais;
+:Aplicar as Componentes nos dados;
+stop
+@enduml

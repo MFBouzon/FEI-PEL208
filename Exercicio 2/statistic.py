@@ -7,6 +7,8 @@ Created on Thu Oct 31 21:07:31 2019
 
 @project: PEL-208 Exercicio 2: Implementação da Análise de Componentes Principal (PCA)
 
+Arquivo com funções estatística para o cálculo do PCA
+
 """
 from math import sqrt
 import numpy as np
@@ -74,8 +76,17 @@ def PCA(data):
     eigVal = eigVal[::-1]
     eigVec = eigVec[::-1]
     eigVec = np.asarray(eigVec)
-    
     return eigVal, eigVec
+
+def PCA_transform(data, eigVec):
+    return np.matmul(eigVec, data)
+
+def PCA_inverse_transform(data, eigVec, mean):
+    mult = np.matmul(np.linalg.inv(eigVec.T), data)
+    for i in range(len(mult)):
+        for j in range(len(mult[i])):
+            mult[i][j] + mean[i]
+    return mult
 
 #função que calcula as componentes principais utilizando a implementação própria
 # do cálculo dos auto valores e auto vetores para 2 variáveis
