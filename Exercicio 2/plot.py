@@ -11,6 +11,7 @@ Funções para exibição de gráficos
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 #Função para plotar o gráfico com o total da variância explicada por cada auto vetor
 def explainedVariance(eigenValues):
@@ -41,7 +42,7 @@ def PCAxRegression(inp, out, xy_n, x, yl):
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.title('PCA')
-        #plt.plot(x, yl, color = 'blue', label = 'Regressão Linear')
+        plt.plot(x, yl, color = 'blue', label = 'Regressão Linear')
         plt.plot(xy_n[:,0], xy_n[:,1], color='red', label = 'Componente Principal')
         plt.legend(loc='upper left')
         plt.show()
@@ -51,6 +52,6 @@ def PCAxRegression(inp, out, xy_n, x, yl):
         ax.scatter3D(inp[:,0], inp[:,1], out, color='black')
         ax.plot3D(xy_n[:,0], xy_n[:,1], xy_n[:,2], 'red')
         
-        #ax.plot3D(np.array(x[:,0]).ravel(), np.array(x[:,1]).ravel(), yl.flatten(), 'blue')
+        ax.plot3D(np.array(x[:,0]).ravel(), np.array(x[:,1]).ravel(), yl.flatten(), 'blue')
         plt.show()
         
