@@ -3,17 +3,66 @@
 Created on Thu Nov 14 19:57:10 2019
 
 @author: Murillo
+
+@project: PEL-208 Exercicio 3: Implementação do método LDA
+
 """
 
-from math import sqrt
 import numpy as np
 
 #função para calcular a média de um conjunto de valores em uma lista
 def mean(data):
     return sum(data)/len(data)
 
+#função para calcular a média de cada característica de toda a amostra
 def grand_mean(data):
-    return sum([mean(i) for i in data])/len(data)
+    return np.asarray([mean(data[i]) for i in range(len(data))])
+
+#método para calcular a matriz within-class
+def within_class(data, classMeans):
+    Sw = np.zeros((data.shape[1],data.shape[1]))
+    for i in range(len(data)):
+        Si = np.zeros((data.shape[1],data.shape[1]))
+        for j in range(data.shape[2]):
+            row, mv = data[i][:,j].reshape(data.shape[1], 1), classMeans[i].reshape(data.shape[1], 1)
+            Si += (row - mv).dot((row-mv).T)
+        Sw += Si
+    return Sw
+
+#método para calcular a matriz between-class
+def between_class(grandMean, classMeans, data):
+    Sb = np.zeros((data.shape[1], data.shape[1]))
+    for i in range(len(classMeans)):
+        meanV, meanG = classMeans[i].reshape(data.shape[1], 1), grandMean.reshape(data.shape[1], 1)    
+        Sb += data[i].shape[1] * (meanV - meanG).dot((meanV - meanG).T)
+    return Sb
+
+def LDA(data, labels):
+    newData = np.asarray([data[:,labels == i] for i in range(max(labels)+1)])
+    
+    grandMean = grand_mean(data)
+    grandMean.reshape(grandMean.shape[0], 1)
+    
+    classMeans = np.asarray([grand_mean(newData[i]) for i in range(len(newData))])
+    
+    Sw = within_class(newData, classMeans)
+    Sb = between_class(grandMean, classMeans, newData)
+    
+    eigVal, eigVec = np.linalg.eig(np.linalg.inv(Sw).dot(Sb))
+    
+    
+    eigPair = [(np.abs(eigVal[i]), eigVec[:,i]) for i in range(len(eigVal))]
+    eigPair = sorted(eigPair, key = lambda k: k[0], reverse = True)
+    
+    return eigPair
+
+def LDA_transform(data, eigPair, k):
+    W = []
+    for i in range(k):
+        W.append(eigPair[i][1].reshape(len(eigPair[i][1]), 1))
+    W = np.asarray(W)
+    data_lda = data.T.dot(W)
+    return data_lda
 
 #função para calcular a covariância entre duas variáveis
 def covariance(x, y):
@@ -30,54 +79,24 @@ def getCovMatrix(data):
     cov = [[covariance(data[x],data[y]) for x in range(len(data))] for y in range(len(data))]
     return cov
  
-#funão para resolver um sistema linear de duas equações        
-def solveLin(mat, v):
-    y = v - mat[0][0]
-    x = mat[0][1]
-    S = sqrt((x**2) + (y**2))
-    return x/S, y/S
-
-#função que retorna os auto valores de uma matriz
-def getEigenValues(data):
-    
-    T = data[0][0] + data[1][1]
-    D = (data[0][0]*data[1][1]) - (data[0][1]*data[1][0])    
-
-    L1 = T/2 + sqrt(T**2/4 - D)
-    L2 = T/2 - sqrt(T**2/4 - D)
-    
-    return L1, L2
-
-#função que retorna os auto vetores a partir de uma matriz e seus auto valores
-def getEigenVector(cov, eValues):
-    eVec = []
-    for i in eValues:
-        res = solveLin(cov, i)
-        eVec.append(res)
-    return eVec
 
 #função que calcula a análise de componentes principais de um conjunto de dados utilizando
 # o numpy para o cálculo dos auto valores e auto vetores
 def PCA(data):
     covMatrix = getCovMatrix(data)
     eigenValues, eigenVector = np.linalg.eig(covMatrix)
-    zipped = zip(eigenValues, eigenVector.T)
-    zipped = sorted(zipped)
+    eigPair = [(np.abs(eigenValues[i]), eigenVector[:,i]) for i in range(len(eigenValues))]
+    eigPair = sorted(eigPair, key = lambda k: k[0], reverse = True)
     
-    eigVec = []
-    eigVal = []
-    
-    for i in zipped:
-        eigVal.append(i[0])
-        eigVec.append(i[1])
-   
-    eigVal = eigVal[::-1]
-    eigVec = eigVec[::-1]
-    eigVec = np.asarray(eigVec)
-    return eigVal, eigVec
+    return eigPair
 
-def PCA_transform(data, eigVec):
-    return np.matmul(eigVec, data)
+def PCA_transform(data, eigPair, k):
+    W = []
+    for i in range(k):
+        W.append(eigPair[i][1].reshape(len(eigPair[i][1]), 1))
+    W = np.asarray(W)
+    data_pca = data.T.dot(W)
+    return data_pca
 
 def PCA_inverse_transform(data, eigVec, mean):
     mult = np.matmul(np.linalg.inv(eigVec.T), data)
@@ -86,11 +105,4 @@ def PCA_inverse_transform(data, eigVec, mean):
             mult[i][j] + mean[i]
     return mult
 
-#função que calcula as componentes principais utilizando a implementação própria
-# do cálculo dos auto valores e auto vetores para 2 variáveis
-def PCA2(data):
-    covMatrix = getCovMatrix(data)
-    eigenValues = getEigenValues(covMatrix)
-    eigenVector = getEigenVector(covMatrix, eigenValues)
-    return eigenValues, eigenVector
     
