@@ -43,19 +43,19 @@ def transformedData2D(transData, labels, title, names):
     plt.title(title)
     
     # hide axis ticks
-    plt.tick_params(axis="both", which="both", bottom="off", top="off",  
-            labelbottom="on", left="off", right="off", labelleft="on")
+    plt.tick_params(axis="both", which="both", bottom=False, top=False,  
+            labelbottom=True, left=False, right=False, labelleft=True)
     
     plt.grid()
     plt.tight_layout
     plt.show()
 
 
-#Função para plotar o gráfico com os dados projetados nos dois primeiros eigenVectors
+#Função para plotar o gráfico com os dados projetados no primeiro eigen-vector
 def transformedData1D(transData, labels, title, names):
     for label, marker, color in zip(range(3), ('>', "^", 'v'), ('blue', 'red', 'green')):
         plt.scatter(x=transData[:,0].real[labels == label], 
-                    y = labels[labels == label] *0,
+                    y = labels[labels == label],
                     marker = marker,
                     color = color,
                     alpha = 0.8,
@@ -67,8 +67,8 @@ def transformedData1D(transData, labels, title, names):
     plt.title(title)
     
     # hide axis ticks
-    plt.tick_params(axis="both", which="both", bottom="off", top="off",  
-            labelbottom="on", left="off", right="off", labelleft="on")
+    plt.tick_params(axis="both", which="both", bottom=False, top=False,  
+            labelbottom=True, left=False, right=False, labelleft=True)
     
     plt.grid()
     plt.tight_layout

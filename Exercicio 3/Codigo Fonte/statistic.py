@@ -6,6 +6,7 @@ Created on Thu Nov 14 19:57:10 2019
 
 @project: PEL-208 Exercicio 3: Implementação do método LDA
 
+Funções para o cálculo dos métodos estatísticos
 """
 
 import numpy as np
@@ -37,6 +38,8 @@ def between_class(grandMean, classMeans, data):
         Sb += data[i].shape[1] * (meanV - meanG).dot((meanV - meanG).T)
     return Sb
 
+#método que calcula a análise de discriminante linear para um conjunto de dados supervisionados
+# utilizando a biblioteca numpy para o cálculo dos autovalores e autovetores
 def LDA(data, labels):
     newData = np.asarray([data[:,labels == i] for i in range(max(labels)+1)])
     
@@ -56,6 +59,8 @@ def LDA(data, labels):
     
     return eigPair
 
+#método para transformar os dados originais para o novo
+# eixo de coordenadas encontrados pelo método LDA
 def LDA_transform(data, eigPair, k):
     W = []
     for i in range(k):
@@ -90,6 +95,8 @@ def PCA(data):
     
     return eigPair
 
+#método para transformar os dados originais para o novo
+# eixo de coordenadas encontrados pelo método PCA
 def PCA_transform(data, eigPair, k):
     W = []
     for i in range(k):
@@ -98,6 +105,8 @@ def PCA_transform(data, eigPair, k):
     data_pca = data.T.dot(W)
     return data_pca
 
+#método para transformar os trasnformados de volta para
+# o eixo de coordenadas originais
 def PCA_inverse_transform(data, eigVec, mean):
     mult = np.matmul(np.linalg.inv(eigVec.T), data)
     for i in range(len(mult)):

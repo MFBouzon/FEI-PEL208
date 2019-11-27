@@ -13,7 +13,6 @@ Created on Thu Nov 14 19:52:31 2019
 import statistic
 import plot
 from sklearn import datasets
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.decomposition import PCA
 
 #Leitura da base
@@ -31,10 +30,6 @@ pca = statistic.PCA(data)
 #Transformação dos dados utilizando dois autovetores
 lda_data = statistic.LDA_transform(data, lda, 2)
 pca_data = statistic.PCA_transform(data, pca, 2)
-
-pca2 = PCA(n_components = 2)
-pca2.fit(data.T)
-pca_data2 = pca2.transform(data.T)
 
 #Plotagem dos dados em duas dimensões
 plot.transformedData2D(lda_data, labels, "LDA: Iris projetada nos dois primeiros discrimantes lineares", names)
@@ -59,8 +54,11 @@ for i in range(1, 4):
     pca_data = pca2.transform(data.T)
 
     lda = statistic.LDA(pca_data.T, labels)
-    lda_data = statistic.LDA_transform(pca_data.T, lda, 1)    
-    plot.transformedData1D(lda_data, labels, "LDA aplicado sobre " + str(i) + " componente(s) do PCA", names)
-
+    if i == 1:
+        lda_data = statistic.LDA_transform(pca_data.T, lda, 1)    
+        plot.transformedData1D(lda_data, labels, "LDA aplicado sobre " + str(i) + " componente(s) do PCA", names)
+    else:
+        lda_data = statistic.LDA_transform(pca_data.T, lda, 2)    
+        plot.transformedData2D(lda_data, labels, "LDA aplicado sobre " + str(i) + " componente(s) do PCA", names)
 
 
