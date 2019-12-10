@@ -4,7 +4,7 @@ Created on Fri Nov 29 15:44:34 2019
 
 @author: Murillo
 
-@project: PEL-208 Exercicio 4: Implementação algoritmo de clusterização K-Means
+@project: PEL-208 Exercicio 4: Implementação do algoritmo de clusterização K-Means
 
 Métodos estatísticos
 """
@@ -12,6 +12,7 @@ Métodos estatísticos
 import numpy as np
 import plot
 
+#método para cálculo de distância
 def dist(x1, x2, r):
     return sum(abs(x1 - x2)**r)**(1/r)
 
@@ -23,6 +24,7 @@ def mean(data):
 def grand_mean(data):
     return np.asarray([mean(data[i]) for i in range(len(data))])
 
+#método para clusterizar dados utilizando o kmeans
 def kmeans(data, k):
     C = np.asarray([np.random.uniform(np.min(data[:,i]), np.max(data[:,i]), size=k) 
     for i in range(data.shape[1])]).T
