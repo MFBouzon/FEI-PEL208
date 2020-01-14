@@ -1,5 +1,6 @@
 # FEI-PEL208
 Exercícios da disciplina Tópicos Especiais em Aprendizagem do Centro Universitário FEI
+
 Linguagem: Python
 
 Exercício 1 - Regressão Linear (Concluído) :heavy_check_mark:
