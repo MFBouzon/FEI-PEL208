@@ -23,9 +23,9 @@ class MLP:
         
     def add_layer(self, n, function="sigmoid"):
         self.layer_size.append(n)
-        self.weights.append(np.zeros(n))
+        self.weights.append(np.random.randn(self.layer_size[-1], self.layer_size[-2]) * np.sqrt(2 / (self.layer_size[-1] + self.layer_size[-2])))
         self.functions.append(function)
-        self.biases.append(0)
+        self.biases.append(np.random.uniform(0, 0, size=(n, 1)))
     
     @staticmethod
     def relu(x):
@@ -64,7 +64,6 @@ class MLP:
     def train(self, x, labels):
         labels = np.matrix(labels).T
         out = self.feed_forward(x)
-        print(out)
         errors = [np.subtract(labels, out[-1])]
         for i in range(len(self.weights) - 1):
             errors.insert(0, np.dot(self.weights[-1-i].T, errors[0]))
